@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sürpriz Site</title>
+    <title>ARİT</title>
     <style>
         /* Genel stil */
         body, html {
@@ -13,7 +13,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #ff4e50, #f9d423); /* aşk teması renkleri */
+            background: linear-gradient(135deg, #8B0000, #4B0082); /* koyu aşk teması */
             color: white;
             text-align: center;
         }
@@ -44,8 +44,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>O kadar sabrettik…</h1>
-        <p>Az daha sabretmeliyiz ki güzel şeyler olup ortaya çıksın.</p>
+        <h1>ARİT</h1>
+        <p>O kadar sabrettik… Az daha sabretmeliyiz ki güzel şeyler olup ortaya çıksın.</p>
         <div class="countdown" id="countdown">Yükleniyor...</div>
     </div>
 
@@ -59,9 +59,8 @@
             const distance = targetDate - now;
 
             if(distance <= 0) {
-                // Zaman doldu, siteyi göstermek için yönlendirme yap veya gizleme
+                // Zaman doldu, siteyi göstermek için yönlendirme yap veya diğer içerikleri aç
                 countdownEl.innerHTML = "Artık siteyi görebilirsin!";
-                // İstersen diğer içerikleri gösterecek bir div burada açılabilir
                 clearInterval(interval);
                 return;
             }
