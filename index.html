@@ -50,6 +50,7 @@
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
         }
 
+        /* Mesaj kutularının ortak stili */
         .message-box {
             font-family: 'Lora', serif; 
             font-size: 1.7em; 
@@ -75,6 +76,12 @@
             border: 1px solid rgba(247, 217, 119, 0.2);
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
+
+        /* Başlangıçta gizli olacak ikinci mesaj kutusu */
+        #dynamic-message-box {
+            display: none; 
+        }
+
     </style>
 </head>
 <body>
@@ -85,56 +92,75 @@
             <img src="logo.png" alt="ARİT Logo">
         </div>
         
-        <div class="message-box" id="message-box">
+        <div class="message-box" id="message-box-1">
             Seninle geçen bir yıl... Hayatımın en güzel rüyası. Birlikte nice yıllara, nice anılara. ❤️
         </div>
         
+        <div class="message-box" id="dynamic-message-box">
+            </div>
+
         <div class="countdown-box" id="countdown">Yükleniyor...</div>
     </div>
 
     <script>
-        // 1 dakika önceki tarih (00:22)
-        const messageTargetDate = new Date("December 7, 2025 00:22:00").getTime(); 
-        // Asıl yönlendirme tarihi (00:23)
+        // --- ASIL TARİHLER ---
+        // Mesaj saati (00:21:00)
+        const messageTargetDate = new Date("December 7, 2025 00:21:00").getTime(); 
+        // Yükleniyor... yazısı saati (00:22:00)
+        const loadingTargetDate = new Date("December 7, 2025 00:22:00").getTime(); 
+        // Yönlendirme saati (00:23:00)
         const redirectTargetDate = new Date("December 7, 2025 00:23:00").getTime(); 
+        // --- BİTİŞ ---
        
         const countdownEl = document.getElementById("countdown");
-        const messageEl = document.getElementById("message-box"); // Mesaj kutusunu seçtik
+        // İkinci, dinamik mesaj kutusunu seçiyoruz
+        const dynamicMessageEl = document.getElementById("dynamic-message-box"); 
 
-        // Yazının değişip değişmediğini kontrol etmek için bir bayrak
-        let messageChanged = false;
+        let messageShown = false; 
+        let loadingMessageShown = false;
 
         function updateCountdown() {
             const now = new Date().getTime();
             const distanceToMessage = messageTargetDate - now;
+            const distanceToLoading = loadingTargetDate - now;
             const distanceToRedirect = redirectTargetDate - now;
 
-            // 1. DURUM: Yönlendirme saati (00:23) geldi
+            // 1. DURUM: Yönlendirme saati (00:23:00) geldi
             if(distanceToRedirect <= 0) {
                 clearInterval(interval);
-                countdownEl.innerHTML = "Sürpriz yükleniyor..."; 
+                dynamicMessageEl.innerHTML = "Sürpriz yükleniyor..."; // Son mesaj
+                dynamicMessageEl.style.display = 'inline-block'; // Görünür yap
+                countdownEl.style.display = 'none'; // Sayacı gizle
                 window.location.href = "hediye.html"; 
                 return;
             }
-
-            // 2. DURUM: Mesaj saati (00:22) geldi ve yazı henüz değişmedi
-            if(distanceToMessage <= 0 && !messageChanged) {
-                messageEl.innerHTML = "Mutlu Yıl Dönümümüz Olsun Sevgilim! ❤️";
-                messageChanged = true; // Yazının değiştiğini işaretle
+            
+            // 2. DURUM: Yükleniyor... saati (00:22:00) geldi
+            if(distanceToLoading <= 0 && !loadingMessageShown) {
+                dynamicMessageEl.innerHTML = "Sürpriz yükleniyor...";
+                dynamicMessageEl.style.display = 'inline-block'; // Görünür yap
+                loadingMessageShown = true;
+                messageShown = true; // İlk mesajı da atlamış olabilir
             }
 
-            // 3. DURUM: Sayaç 00:23'e (yönlendirme saatine) doğru saymaya devam ediyor
+            // 3. DURUM: Mesaj saati (00:21:00) geldi
+            if(distanceToMessage <= 0 && !messageShown) {
+                dynamicMessageEl.innerHTML = "Mutlu Yıl Dönümümüz Olsun Sevgilim! ❤️";
+                dynamicMessageEl.style.display = 'inline-block'; // Kutuyu GÖRÜNÜR yap
+                messageShown = true; 
+            }
+
+            // 4. DURUM: Sayaç devam ediyor
+            // Sayaç 00:23'e (yönlendirme saatine) doğru saymaya devam ediyor
             const days = Math.floor(distanceToRedirect / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distanceToRedirect % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distanceToRedirect % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distanceToRedirect % (1000 * 60)) / 1000);
 
-            // Son 1 dakikayı daha temiz göster
             if (days === 0 && hours === 0) {
                 if (minutes > 0) {
                     countdownEl.innerHTML = `${minutes} dakika ${seconds} saniye`;
                 } else {
-                    // Son dakika sadece saniyeyi göster
                     countdownEl.innerHTML = `${seconds} saniye`;
                 }
             } else {
