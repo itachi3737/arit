@@ -5,347 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARİT</title>
     <link rel="icon" type="image/png" href="logo.png">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
+        /* ... (Diğer stiller aynı) ... */
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&family=Lora:wght@400;700&display=swap');
 
         body, html {
-            height: 100%;
-            margin: 0;
-            font-family: 'Montserrat', sans-serif; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #1d0f2b; 
-            color: white;
-            text-align: center;
-            flex-direction: column;
-            padding: 15px; 
-            box-sizing: border-box;
-            overflow: hidden; 
+            height: 100%; margin: 0; font-family: 'Montserrat', sans-serif; display: flex;
+            justify-content: center; align-items: center; background-color: #1d0f2b; color: white;
+            text-align: center; flex-direction: column; padding: 15px; box-sizing: border-box; overflow: hidden;
         }
-
-        /* --- YILDIZ ANİMASYONU --- */
         @keyframes moveUp { 100% { transform: translateY(-100vh); } }
         .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: transparent; overflow: hidden; z-index: -1; }
         .star { position: absolute; background: #fff; border-radius: 50%; animation: moveUp 10s linear infinite; }
-        /* --- YILDIZ BİTİŞ --- */
 
-
-        /* --- MÜZİK KONTROL PANELİ (BÜYÜTÜLDÜ VE STİL GÜNCELLENDİ) --- */
         #music-controls {
-            position: fixed;
-            bottom: 25px; /* Biraz daha yukarı aldık */
-            left: 50%; 
-            transform: translateX(-50%); 
-            width: auto; 
-            max-width: 90%; 
-            background: rgba(0, 0, 0, 0.45); /* Biraz daha belirgin */
-            border: 1px solid rgba(247, 217, 119, 0.2); /* Çerçeve biraz daha belirgin */
-            border-radius: 30px; /* Daha da oval */
-            padding: 12px 20px; /* İç boşluklar arttı */
-            display: flex; 
-            align-items: center; 
-            gap: 15px; /* Öğeler arası boşluk arttı */
-            z-index: 50;
-            opacity: 0.7; /* Normalde biraz daha görünür */
-            transition: opacity 0.3s ease; 
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: auto; max-width: 95%;
+            background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(247, 217, 119, 0.2); border-radius: 30px;
+            padding: 10px 15px; display: flex; align-items: center;
+            /* DEĞİŞİKLİK: Gap tekrar ayarlandı (çok yakın olmasın) */
+            gap: 5px;
+            z-index: 50; opacity: 0.7; transition: opacity 0.3s ease;
         }
-        #music-controls:hover {
-            opacity: 1; 
-        }
-        #music-toggle-btn { 
-            background: none;
-            border: none;
-            color: #f7d977;
-            font-size: 1.8em; /* Buton büyüdü */
-            cursor: pointer;
-            padding: 0;
-            line-height: 1; 
-        }
-        #progress-container { 
-            flex-grow: 1; 
-            height: 8px; /* Biraz kalınlaştı */
-            background-color: rgba(255, 255, 255, 0.2); /* Arka plan belirgin */
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 0;
-            min-width: 120px; /* Minimum genişlik arttı */
-        }
-        #progress-bar { 
-            height: 100%;
-            width: 0%; 
-            background-color: #f7d977;
-            border-radius: 4px;
-        }
-        #time-display { 
-            font-size: 0.85em; /* Yazı büyüdü */
-            min-width: 85px; 
-            text-align: right;
-            color: rgba(255, 255, 255, 0.8); /* Rengi biraz daha belirgin */
-        }
-        
-        /* SES AYARI (YENİ STİL) */
-        #volume-slider { 
-            -webkit-appearance: none;
-            appearance: none;
-            width: 80px; /* Biraz uzadı */
-            height: 8px; /* Kalınlaştı */
-            background: rgba(255, 255, 255, 0.2); /* Arka plan yolu */
-            border-radius: 4px; /* Köşeler */
-            cursor: pointer;
-            outline: none; /* Tıklama çerçevesini kaldır */
-            /* Dolgu efekti JS ile eklenecek */
-        }
-        #volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 15px; /* Topuz büyüdü */
-            height: 15px;
-            background: #f7d977; /* Sarı topuz */
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        #volume-slider::-moz-range-thumb {
-            width: 15px; /* Topuz büyüdü */
-            height: 15px;
-            background: #f7d977; /* Sarı topuz */
-            border-radius: 50%;
-            cursor: pointer;
-            border: none;
-        }
-         /* Firefox dolgu rengi (JS'ye ek olarak) */
-        #volume-slider::-moz-range-progress {
-            background-color: #f7d977; 
-            height: 8px;
-            border-radius: 4px;
-        }
-        /* --- MÜZİK KONTROL PANELİ BİTİŞ --- */
-        
-        /* Ana içerik */
-        .container {
-            max-width: 600px;
-            width: 100%;
-            padding: 30px 20px; 
-            box-sizing: border-box;
-            display: block; 
-            animation: fadeIn 2s ease-in-out; 
-            z-index: 1; 
-            position: relative; 
-        }
+        #music-controls:hover { opacity: 1; }
 
+        #music-controls button {
+            background: none; border: none; color: #f7d977;
+            font-size: 1em; cursor: pointer; padding: 0; /* Padding'i sıfırla, boyut width/height ile kontrol edilecek */
+            line-height: 1; transition: transform 0.2s ease;
+            /* DEĞİŞİKLİK: Boyutlar büyüdü */
+            width: 45px;
+            height: 45px;
+            display: inline-flex; justify-content: center; align-items: center;
+        }
+        #music-controls button:active { transform: scale(0.9); }
+        /* DEĞİŞİKLİK: İkon boyutları büyüdü */
+        #music-controls button i { font-size: 1.4em; /* Önceki/Sonraki */ }
+        #music-toggle-btn {
+             /* DEĞİŞİKLİK: Play/Pause daha da büyüdü */
+             width: 55px;
+             height: 55px;
+             margin: 0 2px; /* Hafif boşluk */
+         }
+        #music-toggle-btn i { font-size: 1.8em; /* Oynat/Duraklat ikonu */ }
+
+
+        #progress-container { flex-grow: 1; height: 8px; background-color: rgba(255, 255, 255, 0.2); border-radius: 4px; cursor: pointer; margin: 0 8px; min-width: 100px; }
+        #progress-bar { height: 100%; width: 0%; background-color: #f7d977; border-radius: 4px; }
+        #time-display { font-size: 0.8em; min-width: 80px; text-align: right; color: rgba(255, 255, 255, 0.8); margin-left: 5px; }
+        #volume-slider { -webkit-appearance: none; appearance: none; width: 70px; height: 8px; background: rgba(255, 255, 255, 0.2); border-radius: 4px; cursor: pointer; outline: none; margin-left: 8px;}
+        #volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 15px; height: 15px; background: #f7d977; border-radius: 50%; cursor: pointer; }
+        #volume-slider::-moz-range-thumb { width: 15px; height: 15px; background: #f7d977; border-radius: 50%; cursor: pointer; border: none; }
+        #volume-slider::-moz-range-progress { background-color: #f7d977; height: 8px; border-radius: 4px; }
+
+        .container { max-width: 600px; width: 100%; padding: 30px 20px; box-sizing: border-box; display: block; animation: fadeIn 2s ease-in-out; z-index: 1; position: relative; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-       
         h1 { font-family: 'Dancing Script', cursive; font-size: 3.8em; margin-top: 0; margin-bottom: 20px; color: #f7d977; text-shadow: 0 0 10px rgba(247, 217, 119, 0.5); }
         .image-box { margin-bottom: 30px; }
         .image-box img { max-width: 200px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7); }
         .message-box { font-family: 'Lora', serif; font-size: 1.7em; line-height: 1.6; margin-bottom: 30px; background: rgba(0, 0, 0, 0.25); padding: 25px; border-radius: 20px; display: inline-block; border: 1px solid rgba(247, 217, 119, 0.2); box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); }
         .countdown-box { font-size: 2em; font-weight: 700; color: #f7d977; text-shadow: 0 0 5px rgba(247, 217, 119, 0.3); background: rgba(0, 0, 0, 0.25); padding: 20px 40px; border-radius: 20px; display: inline-block; border: 1px solid rgba(247, 217, 119, 0.2); box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); }
         #dynamic-message-box { display: none; }
-
     </style>
 </head>
 <body>
 
     <div class="stars" id="stars-container"></div>
-    
-    <audio id="bg-music" loop src="sarki1.mp3"></audio>
-    
+    <audio id="bg-music" src="sarki1.mp3"></audio>
+
     <div id="music-controls">
-        <button id="music-toggle-btn">▶️</button> 
+        <button id="prev-btn" title="Önceki Şarkı"><i class="fas fa-backward-step"></i></button>
+        <button id="music-toggle-btn" title="Oynat/Duraklat"><i class="fas fa-play"></i></button>
+        <button id="next-btn" title="Sonraki Şarkı"><i class="fas fa-forward-step"></i></button>
         <div id="progress-container">
             <div id="progress-bar"></div>
         </div>
         <span id="time-display">00:00 / 00:00</span>
-        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3">
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3" title="Ses Ayarı">
     </div>
-    
-    <div class="container" id="main-container"> 
+
+    <div class="container" id="main-container">
         <h1>ARİT</h1>
         <div class="image-box">
             <img src="logo.png" alt="ARİT Logo">
         </div>
-        
         <div class="message-box" id="message-box-1">
             Seninle geçen bir yıl... Hayatımın en güzel rüyası. Birlikte nice yıllara, nice anılara. ❤️
         </div>
-        
         <div class="message-box" id="dynamic-message-box"></div>
-
         <div class="countdown-box" id="countdown">Yükleniyor...</div>
     </div>
 
     <script>
-        // --- ASIL TARİHLER ---
-        const messageTargetDate = new Date("December 7, 2025 00:21:00").getTime(); 
-        const loadingTargetDate = new Date("December 7, 2025 00:22:00").getTime(); 
-        const redirectTargetDate = new Date("December 7, 2025 00:23:00").getTime(); 
-        
-        const countdownEl = document.getElementById("countdown");
-        const dynamicMessageEl = document.getElementById("dynamic-message-box"); 
-        let messageShown = false; 
-        let loadingMessageShown = false;
+        // --- Zamanlama ---
+        const messageTargetDate = new Date("December 7, 2025 00:21:00").getTime(); const loadingTargetDate = new Date("December 7, 2025 00:22:00").getTime(); const redirectTargetDate = new Date("December 7, 2025 00:23:00").getTime();
+        // --- Elementler ---
+        const countdownEl = document.getElementById("countdown"); const dynamicMessageEl = document.getElementById("dynamic-message-box"); const music = document.getElementById("bg-music"); const musicControls = document.getElementById("music-controls"); const musicBtn = document.getElementById("music-toggle-btn"); const prevBtn = document.getElementById("prev-btn"); const nextBtn = document.getElementById("next-btn"); const progressBar = document.getElementById("progress-bar"); const progressContainer = document.getElementById("progress-container"); const timeDisplay = document.getElementById("time-display"); const volumeSlider = document.getElementById("volume-slider"); const starsContainer = document.getElementById("stars-container");
+        // --- Durum ---
+        let messageShown = false; let loadingMessageShown = false; let isPlaying = false; let interval;
+        // --- Playlist ---
+        const playlist = [ "sarki1.mp3" /*, "sarki2.mp3", "ozel_sarki.mp3"*/ ]; let currentTrackIndex = 0;
 
-        // --- MÜZİK KONTROLLERİ ---
-        const mainContainer = document.getElementById("main-container");
-        const music = document.getElementById("bg-music");
-        const musicControls = document.getElementById("music-controls");
-        const musicBtn = document.getElementById("music-toggle-btn");
-        const progressBar = document.getElementById("progress-bar");
-        const progressContainer = document.getElementById("progress-container");
-        const timeDisplay = document.getElementById("time-display");
-        const volumeSlider = document.getElementById("volume-slider");
+        // --- Fonksiyonlar ---
+        function loadTrack(trackIndex) { music.onerror = null; music.onloadedmetadata = null; music.oncanplay = null; if (!playlist || playlist.length === 0 || trackIndex < 0 || trackIndex >= playlist.length) { console.error("Playlist hatası:", trackIndex); timeDisplay.textContent = "Liste Boş"; return; } music.src = playlist[trackIndex]; music.load(); console.log(`Yükleniyor: ${playlist[trackIndex]}`); music.onerror = (e) => { console.error(`Hata: "${playlist[trackIndex]}"`, e); timeDisplay.textContent = "Hata"; setTimeout(nextTrack, 2000); }; music.onloadedmetadata = () => { timeDisplay.textContent = `00:00 / ${formatTime(music.duration)}`; applyVolumeFill(volumeSlider); progressBar.style.width = '0%'; }; music.oncanplay = () => { if (isPlaying) { music.play().catch(e => { console.error("Çalma hatası:", e); isPlaying = false; musicBtn.innerHTML = '<i class="fas fa-play"></i>'; }); } }; }
+        function nextTrack() { if (!playlist || playlist.length === 0) return; currentTrackIndex = (currentTrackIndex + 1) % playlist.length; loadTrack(currentTrackIndex); }
+        function prevTrack() { if (!playlist || playlist.length === 0) return; currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; loadTrack(currentTrackIndex); }
+        function togglePlayPause() { if (isPlaying) { music.pause(); musicBtn.innerHTML = '<i class="fas fa-play"></i>'; } else { const playPromise = music.play(); if (playPromise !== undefined) { playPromise.then(() => { musicBtn.innerHTML = '<i class="fas fa-pause"></i>'; }).catch(error => { console.error("Oynatma hatası:", error); isPlaying = false; musicBtn.innerHTML = '<i class="fas fa-play"></i>'; }); } else { try { music.play(); musicBtn.innerHTML = '<i class="fas fa-pause"></i>'; } catch (error) { console.error("Eski tarayıcı oynatma hatası:", error); isPlaying = false; musicBtn.innerHTML = '<i class="fas fa-play"></i>'; } } } isPlaying = !isPlaying; }
+        function handleVolumeChange(e) { const value = e.target.value; music.volume = value; music.muted = value == 0; applyVolumeFill(e.target); }
+        function applyVolumeFill(slider) { const percentage = (slider.value / slider.max) * 100; slider.style.background = `linear-gradient(to right, #f7d977 ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%)`; }
+        function updateProgressBar() { if (music.duration) { const progressPercent = (music.currentTime / music.duration) * 100; progressBar.style.width = `${progressPercent}%`; timeDisplay.textContent = `${formatTime(music.currentTime)} / ${formatTime(music.duration)}`; } }
+        function seek(e) { if (music.duration) { const clickX = e.offsetX; const width = progressContainer.clientWidth; music.currentTime = (clickX / width) * music.duration; } }
+        function formatTime(seconds) { if (isNaN(seconds)) return "00:00"; const minutes = Math.floor(seconds / 60); const secs = Math.floor(seconds % 60); return `${minutes < 10 ? '0' : ''}${minutes}:${secs < 10 ? '0' : ''}${secs}`; }
+        function createStars() { const starCount = window.innerWidth < 768 ? 50 : 100; for (let i = 0; i < starCount; i++) { const star = document.createElement('div'); star.classList.add('star'); const size = Math.random() * 2.5 + 0.5; star.style.width = `${size}px`; star.style.height = `${size}px`; star.style.left = `${Math.random() * 100}vw`; star.style.top = `${Math.random() * 100 + 100}vh`; star.style.animationDuration = `${Math.random() * 8 + 12}s`; star.style.animationDelay = `${Math.random() * 8}s`; starsContainer.appendChild(star); } }
+        function updateCountdown() { const now = new Date().getTime(); const dM = messageTargetDate - now; const dL = loadingTargetDate - now; const dR = redirectTargetDate - now; if(dR <= 0) { clearInterval(interval); dynamicMessageEl.innerHTML = "Sürpriz yükleniyor..."; dynamicMessageEl.style.display = 'inline-block'; countdownEl.style.display = 'none'; window.location.href = "hediye.html"; return; } if(dL <= 0 && !loadingMessageShown) { dynamicMessageEl.innerHTML = "Sürpriz yükleniyor..."; dynamicMessageEl.style.display = 'inline-block'; loadingMessageShown = true; messageShown = true; } if(dM <= 0 && !messageShown) { dynamicMessageEl.innerHTML = "Mutlu Yıl Dönümümüz Olsun Sevgilim! ❤️"; dynamicMessageEl.style.display = 'inline-block'; messageShown = true; } const days = Math.floor(dR/(1000*60*60*24)); const hours = Math.floor((dR%(1000*60*60*24))/(1000*60*60)); const minutes = Math.floor((dR%(1000*60*60))/(1000*60)); const seconds = Math.floor((dR%(1000*60))/1000); if(days===0&&hours===0){countdownEl.innerHTML=minutes>0?`${minutes} dakika ${seconds} saniye`:`${seconds} saniye`;}else{countdownEl.innerHTML=`${days} gün ${hours} saat ${minutes} dakika ${seconds} saniye`;}}
 
-        let isPlaying = false; 
+        function startCountdown() { interval = setInterval(updateCountdown, 1000); updateCountdown(); }
 
-        // Oynat/Duraklat butonu
-        musicBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                music.pause();
-                musicBtn.innerHTML = '▶️'; 
-            } else {
-                music.play().then(() => {
-                    musicBtn.innerHTML = '⏸️'; 
-                }).catch(error => console.error("Müzik çalma hatası:", error));
-            }
-            isPlaying = !isPlaying;
-        });
-
-        // Ses ayarı ve DOLGU EFEKTİ
-        volumeSlider.addEventListener('input', (e) => {
-            const value = e.target.value;
-            music.volume = value;
-            music.muted = value == 0; 
-            // Dolgu efekti için arka planı güncelle
-            applyVolumeFill(e.target);
-        });
-        
-        // Ses ayarı dolgu efektini uygulayan fonksiyon
-        function applyVolumeFill(slider) {
-            const percentage = (slider.value / slider.max) * 100;
-            // Lineer gradyan ile dolgu efekti (WebKit ve genel için)
-            slider.style.background = `linear-gradient(to right, #f7d977 ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%)`;
-        }
-
-        // Süre çubuğu güncelleme
-        music.addEventListener('timeupdate', () => {
-            if (music.duration) { 
-                const progressPercent = (music.currentTime / music.duration) * 100;
-                progressBar.style.width = `${progressPercent}%`;
-                timeDisplay.textContent = `${formatTime(music.currentTime)} / ${formatTime(music.duration)}`;
-            }
-        });
-        
-        // Şarkının süresi yüklendiğinde
-        music.addEventListener('loadedmetadata', () => {
-             timeDisplay.textContent = `00:00 / ${formatTime(music.duration)}`;
-             music.volume = volumeSlider.value; 
-             applyVolumeFill(volumeSlider); // Başlangıç dolgusunu ayarla
-        });
-
-        // Süre çubuğuna tıklayarak atlama
-        progressContainer.addEventListener('click', (e) => {
-            if (music.duration) { 
-                const clickX = e.offsetX; 
-                const width = progressContainer.clientWidth; 
-                music.currentTime = (clickX / width) * music.duration; 
-            }
-        });
-        
-         music.addEventListener('ended', () => {
-           musicBtn.innerHTML = '▶️';
-           isPlaying = false;
-         });
-
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return "00:00"; 
-            const minutes = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${minutes < 10 ? '0' : ''}${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-        
-        // --- MÜZİK BİTİŞ ---
-
-
-        // --- YILDIZ OLUŞTURMA ---
-        function createStars() { /* ... (önceki kodla aynı) ... */ }
-        function createStars() {
-            const container = document.getElementById('stars-container');
-            const starCount = window.innerWidth < 768 ? 50 : 100; 
-            for (let i = 0; i < starCount; i++) { 
-                const star = document.createElement('div');
-                star.classList.add('star');
-                const size = Math.random() * 2.5 + 0.5; 
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * 100 + 100}vh`; 
-                star.style.animationDuration = `${Math.random() * 8 + 12}s`; 
-                star.style.animationDelay = `${Math.random() * 8}s`; 
-                container.appendChild(star);
-            }
-        }
-        // --- YILDIZ BİTİŞ ---
-
-        
-        let interval; 
-        
-        function startCountdown() {
-            interval = setInterval(updateCountdown, 1000);
-            updateCountdown(); 
-        }
-
-        // --- ANA KOD Geri Sayım Mantığı (Aynı) ---
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distanceToMessage = messageTargetDate - now;
-            const distanceToLoading = loadingTargetDate - now;
-            const distanceToRedirect = redirectTargetDate - now;
-
-            if(distanceToRedirect <= 0) {
-                clearInterval(interval); 
-                dynamicMessageEl.innerHTML = "Sürpriz yükleniyor...";
-                dynamicMessageEl.style.display = 'inline-block';
-                countdownEl.style.display = 'none';
-                window.location.href = "hediye.html"; 
-                return;
-            }
-            
-            if(distanceToLoading <= 0 && !loadingMessageShown) {
-                dynamicMessageEl.innerHTML = "Sürpriz yükleniyor...";
-                dynamicMessageEl.style.display = 'inline-block';
-                loadingMessageShown = true;
-                messageShown = true; 
-            }
-
-            if(distanceToMessage <= 0 && !messageShown) {
-                dynamicMessageEl.innerHTML = "Mutlu Yıl Dönümümüz Olsun Sevgilim! ❤️";
-                dynamicMessageEl.style.display = 'inline-block';
-                messageShown = true; 
-            }
-
-            const days = Math.floor(distanceToRedirect / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distanceToRedirect % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distanceToRedirect % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distanceToRedirect % (1000 * 60)) / 1000);
-
-            if (days === 0 && hours === 0) {
-                if (minutes > 0) {
-                    countdownEl.innerHTML = `${minutes} dakika ${seconds} saniye`;
-                } else {
-                    countdownEl.innerHTML = `${seconds} saniye`;
-                }
-            } else {
-                countdownEl.innerHTML = `${days} gün ${hours} saat ${minutes} dakika ${seconds} saniye`;
-            }
-        }
-        
-        // Sayfa yüklenince direkt başlat
-        startCountdown();
-        createStars();
-        // Başlangıç ses ayarı dolgusunu uygula
-        window.addEventListener('load', () => applyVolumeFill(volumeSlider)); 
-
+        // --- Olay Dinleyicileri ---
+        musicBtn.addEventListener('click', togglePlayPause); prevBtn.addEventListener('click', prevTrack); nextBtn.addEventListener('click', nextTrack); volumeSlider.addEventListener('input', handleVolumeChange); music.addEventListener('timeupdate', updateProgressBar); progressContainer.addEventListener('click', seek); music.addEventListener('ended', nextTrack);
+        // --- Başlangıç ---
+        window.addEventListener('load', () => { loadTrack(currentTrackIndex); startCountdown(); createStars(); applyVolumeFill(volumeSlider); });
     </script>
 </body>
 </html>
