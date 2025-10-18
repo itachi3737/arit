@@ -92,7 +92,7 @@
         // --- Durum ---
         let messageShown = false; let loadingMessageShown = false; let isPlaying = false; let interval;
         // --- Playlist ---
-        const playlist = [ "sarki1.mp3" /*, "sarki2.mp3", "ozel_sarki.mp3"*/ ]; let currentTrackIndex = 0;
+        const playlist = [ "sarki1.mp3","sarki2.mp3"  /*, "sarki2.mp3", "ozel_sarki.mp3"*/ ]; let currentTrackIndex = 0;
 
         // --- Fonksiyonlar ---
         function loadTrack(trackIndex) { music.onerror = null; music.onloadedmetadata = null; music.oncanplay = null; if (!playlist || playlist.length === 0 || trackIndex < 0 || trackIndex >= playlist.length) { console.error("Playlist hatası:", trackIndex); timeDisplay.textContent = "Liste Boş"; return; } music.src = playlist[trackIndex]; music.load(); console.log(`Yükleniyor: ${playlist[trackIndex]}`); music.onerror = (e) => { console.error(`Hata: "${playlist[trackIndex]}"`, e); timeDisplay.textContent = "Hata"; setTimeout(nextTrack, 2000); }; music.onloadedmetadata = () => { timeDisplay.textContent = `00:00 / ${formatTime(music.duration)}`; applyVolumeFill(volumeSlider); progressBar.style.width = '0%'; music.volume = volumeSlider.value * 0.25; /* Başlangıç sesini ayarla */}; music.oncanplay = () => { if (isPlaying) { music.play().catch(e => { console.error("Çalma hatası:", e); isPlaying = false; musicBtn.innerHTML = '<i class="fas fa-play"></i>'; }); } }; }
