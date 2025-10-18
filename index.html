@@ -22,71 +22,145 @@
             flex-direction: column;
             padding: 15px; 
             box-sizing: border-box;
+            overflow: hidden; 
         }
 
+        /* --- YILDIZ ANİMASYONU --- */
+        @keyframes moveUp { 100% { transform: translateY(-100vh); } }
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: transparent; overflow: hidden; z-index: -1; }
+        .star { position: absolute; background: #fff; border-radius: 50%; animation: moveUp 10s linear infinite; }
+        /* --- YILDIZ BİTİŞ --- */
+
+
+        /* --- MÜZİK KONTROL PANELİ (BÜYÜTÜLDÜ VE STİL GÜNCELLENDİ) --- */
+        #music-controls {
+            position: fixed;
+            bottom: 25px; /* Biraz daha yukarı aldık */
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: auto; 
+            max-width: 90%; 
+            background: rgba(0, 0, 0, 0.45); /* Biraz daha belirgin */
+            border: 1px solid rgba(247, 217, 119, 0.2); /* Çerçeve biraz daha belirgin */
+            border-radius: 30px; /* Daha da oval */
+            padding: 12px 20px; /* İç boşluklar arttı */
+            display: flex; 
+            align-items: center; 
+            gap: 15px; /* Öğeler arası boşluk arttı */
+            z-index: 50;
+            opacity: 0.7; /* Normalde biraz daha görünür */
+            transition: opacity 0.3s ease; 
+        }
+        #music-controls:hover {
+            opacity: 1; 
+        }
+        #music-toggle-btn { 
+            background: none;
+            border: none;
+            color: #f7d977;
+            font-size: 1.8em; /* Buton büyüdü */
+            cursor: pointer;
+            padding: 0;
+            line-height: 1; 
+        }
+        #progress-container { 
+            flex-grow: 1; 
+            height: 8px; /* Biraz kalınlaştı */
+            background-color: rgba(255, 255, 255, 0.2); /* Arka plan belirgin */
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0;
+            min-width: 120px; /* Minimum genişlik arttı */
+        }
+        #progress-bar { 
+            height: 100%;
+            width: 0%; 
+            background-color: #f7d977;
+            border-radius: 4px;
+        }
+        #time-display { 
+            font-size: 0.85em; /* Yazı büyüdü */
+            min-width: 85px; 
+            text-align: right;
+            color: rgba(255, 255, 255, 0.8); /* Rengi biraz daha belirgin */
+        }
+        
+        /* SES AYARI (YENİ STİL) */
+        #volume-slider { 
+            -webkit-appearance: none;
+            appearance: none;
+            width: 80px; /* Biraz uzadı */
+            height: 8px; /* Kalınlaştı */
+            background: rgba(255, 255, 255, 0.2); /* Arka plan yolu */
+            border-radius: 4px; /* Köşeler */
+            cursor: pointer;
+            outline: none; /* Tıklama çerçevesini kaldır */
+            /* Dolgu efekti JS ile eklenecek */
+        }
+        #volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px; /* Topuz büyüdü */
+            height: 15px;
+            background: #f7d977; /* Sarı topuz */
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #volume-slider::-moz-range-thumb {
+            width: 15px; /* Topuz büyüdü */
+            height: 15px;
+            background: #f7d977; /* Sarı topuz */
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+         /* Firefox dolgu rengi (JS'ye ek olarak) */
+        #volume-slider::-moz-range-progress {
+            background-color: #f7d977; 
+            height: 8px;
+            border-radius: 4px;
+        }
+        /* --- MÜZİK KONTROL PANELİ BİTİŞ --- */
+        
+        /* Ana içerik */
         .container {
             max-width: 600px;
             width: 100%;
             padding: 30px 20px; 
             box-sizing: border-box;
+            display: block; 
+            animation: fadeIn 2s ease-in-out; 
+            z-index: 1; 
+            position: relative; 
         }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
        
-        h1 {
-            font-family: 'Dancing Script', cursive; 
-            font-size: 3.8em;
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: #f7d977;
-            text-shadow: 0 0 10px rgba(247, 217, 119, 0.5);
-        }
-
-        .image-box {
-            margin-bottom: 30px;
-        }
-
-        .image-box img {
-            max-width: 200px;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
-        }
-
-        /* Mesaj kutularının ortak stili */
-        .message-box {
-            font-family: 'Lora', serif; 
-            font-size: 1.7em; 
-            line-height: 1.6;
-            margin-bottom: 30px;
-            background: rgba(0, 0, 0, 0.25);
-            padding: 25px;
-            border-radius: 20px;
-            display: inline-block;
-            border: 1px solid rgba(247, 217, 119, 0.2);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .countdown-box {
-            font-size: 2em;
-            font-weight: 700; 
-            color: #f7d977;
-            text-shadow: 0 0 5px rgba(247, 217, 119, 0.3);
-            background: rgba(0, 0, 0, 0.25);
-            padding: 20px 40px;
-            border-radius: 20px;
-            display: inline-block;
-            border: 1px solid rgba(247, 217, 119, 0.2);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Başlangıçta gizli olacak ikinci mesaj kutusu */
-        #dynamic-message-box {
-            display: none; 
-        }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.8em; margin-top: 0; margin-bottom: 20px; color: #f7d977; text-shadow: 0 0 10px rgba(247, 217, 119, 0.5); }
+        .image-box { margin-bottom: 30px; }
+        .image-box img { max-width: 200px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7); }
+        .message-box { font-family: 'Lora', serif; font-size: 1.7em; line-height: 1.6; margin-bottom: 30px; background: rgba(0, 0, 0, 0.25); padding: 25px; border-radius: 20px; display: inline-block; border: 1px solid rgba(247, 217, 119, 0.2); box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); }
+        .countdown-box { font-size: 2em; font-weight: 700; color: #f7d977; text-shadow: 0 0 5px rgba(247, 217, 119, 0.3); background: rgba(0, 0, 0, 0.25); padding: 20px 40px; border-radius: 20px; display: inline-block; border: 1px solid rgba(247, 217, 119, 0.2); box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); }
+        #dynamic-message-box { display: none; }
 
     </style>
 </head>
 <body>
+
+    <div class="stars" id="stars-container"></div>
     
-    <div class="container"> 
+    <audio id="bg-music" loop src="sarki1.mp3"></audio>
+    
+    <div id="music-controls">
+        <button id="music-toggle-btn">▶️</button> 
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+        <span id="time-display">00:00 / 00:00</span>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3">
+    </div>
+    
+    <div class="container" id="main-container"> 
         <h1>ARİT</h1>
         <div class="image-box">
             <img src="logo.png" alt="ARİT Logo">
@@ -96,62 +170,160 @@
             Seninle geçen bir yıl... Hayatımın en güzel rüyası. Birlikte nice yıllara, nice anılara. ❤️
         </div>
         
-        <div class="message-box" id="dynamic-message-box">
-            </div>
+        <div class="message-box" id="dynamic-message-box"></div>
 
         <div class="countdown-box" id="countdown">Yükleniyor...</div>
     </div>
 
     <script>
         // --- ASIL TARİHLER ---
-        // Mesaj saati (00:21:00)
         const messageTargetDate = new Date("December 7, 2025 00:21:00").getTime(); 
-        // Yükleniyor... yazısı saati (00:22:00)
         const loadingTargetDate = new Date("December 7, 2025 00:22:00").getTime(); 
-        // Yönlendirme saati (00:23:00)
         const redirectTargetDate = new Date("December 7, 2025 00:23:00").getTime(); 
-        // --- BİTİŞ ---
-       
+        
         const countdownEl = document.getElementById("countdown");
-        // İkinci, dinamik mesaj kutusunu seçiyoruz
         const dynamicMessageEl = document.getElementById("dynamic-message-box"); 
-
         let messageShown = false; 
         let loadingMessageShown = false;
 
+        // --- MÜZİK KONTROLLERİ ---
+        const mainContainer = document.getElementById("main-container");
+        const music = document.getElementById("bg-music");
+        const musicControls = document.getElementById("music-controls");
+        const musicBtn = document.getElementById("music-toggle-btn");
+        const progressBar = document.getElementById("progress-bar");
+        const progressContainer = document.getElementById("progress-container");
+        const timeDisplay = document.getElementById("time-display");
+        const volumeSlider = document.getElementById("volume-slider");
+
+        let isPlaying = false; 
+
+        // Oynat/Duraklat butonu
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                music.pause();
+                musicBtn.innerHTML = '▶️'; 
+            } else {
+                music.play().then(() => {
+                    musicBtn.innerHTML = '⏸️'; 
+                }).catch(error => console.error("Müzik çalma hatası:", error));
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Ses ayarı ve DOLGU EFEKTİ
+        volumeSlider.addEventListener('input', (e) => {
+            const value = e.target.value;
+            music.volume = value;
+            music.muted = value == 0; 
+            // Dolgu efekti için arka planı güncelle
+            applyVolumeFill(e.target);
+        });
+        
+        // Ses ayarı dolgu efektini uygulayan fonksiyon
+        function applyVolumeFill(slider) {
+            const percentage = (slider.value / slider.max) * 100;
+            // Lineer gradyan ile dolgu efekti (WebKit ve genel için)
+            slider.style.background = `linear-gradient(to right, #f7d977 ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%)`;
+        }
+
+        // Süre çubuğu güncelleme
+        music.addEventListener('timeupdate', () => {
+            if (music.duration) { 
+                const progressPercent = (music.currentTime / music.duration) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+                timeDisplay.textContent = `${formatTime(music.currentTime)} / ${formatTime(music.duration)}`;
+            }
+        });
+        
+        // Şarkının süresi yüklendiğinde
+        music.addEventListener('loadedmetadata', () => {
+             timeDisplay.textContent = `00:00 / ${formatTime(music.duration)}`;
+             music.volume = volumeSlider.value; 
+             applyVolumeFill(volumeSlider); // Başlangıç dolgusunu ayarla
+        });
+
+        // Süre çubuğuna tıklayarak atlama
+        progressContainer.addEventListener('click', (e) => {
+            if (music.duration) { 
+                const clickX = e.offsetX; 
+                const width = progressContainer.clientWidth; 
+                music.currentTime = (clickX / width) * music.duration; 
+            }
+        });
+        
+         music.addEventListener('ended', () => {
+           musicBtn.innerHTML = '▶️';
+           isPlaying = false;
+         });
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "00:00"; 
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes < 10 ? '0' : ''}${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+        
+        // --- MÜZİK BİTİŞ ---
+
+
+        // --- YILDIZ OLUŞTURMA ---
+        function createStars() { /* ... (önceki kodla aynı) ... */ }
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            const starCount = window.innerWidth < 768 ? 50 : 100; 
+            for (let i = 0; i < starCount; i++) { 
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 2.5 + 0.5; 
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100 + 100}vh`; 
+                star.style.animationDuration = `${Math.random() * 8 + 12}s`; 
+                star.style.animationDelay = `${Math.random() * 8}s`; 
+                container.appendChild(star);
+            }
+        }
+        // --- YILDIZ BİTİŞ ---
+
+        
+        let interval; 
+        
+        function startCountdown() {
+            interval = setInterval(updateCountdown, 1000);
+            updateCountdown(); 
+        }
+
+        // --- ANA KOD Geri Sayım Mantığı (Aynı) ---
         function updateCountdown() {
             const now = new Date().getTime();
             const distanceToMessage = messageTargetDate - now;
             const distanceToLoading = loadingTargetDate - now;
             const distanceToRedirect = redirectTargetDate - now;
 
-            // 1. DURUM: Yönlendirme saati (00:23:00) geldi
             if(distanceToRedirect <= 0) {
-                clearInterval(interval);
-                dynamicMessageEl.innerHTML = "Sürpriz yükleniyor..."; // Son mesaj
-                dynamicMessageEl.style.display = 'inline-block'; // Görünür yap
-                countdownEl.style.display = 'none'; // Sayacı gizle
+                clearInterval(interval); 
+                dynamicMessageEl.innerHTML = "Sürpriz yükleniyor...";
+                dynamicMessageEl.style.display = 'inline-block';
+                countdownEl.style.display = 'none';
                 window.location.href = "hediye.html"; 
                 return;
             }
             
-            // 2. DURUM: Yükleniyor... saati (00:22:00) geldi
             if(distanceToLoading <= 0 && !loadingMessageShown) {
                 dynamicMessageEl.innerHTML = "Sürpriz yükleniyor...";
-                dynamicMessageEl.style.display = 'inline-block'; // Görünür yap
+                dynamicMessageEl.style.display = 'inline-block';
                 loadingMessageShown = true;
-                messageShown = true; // İlk mesajı da atlamış olabilir
-            }
-
-            // 3. DURUM: Mesaj saati (00:21:00) geldi
-            if(distanceToMessage <= 0 && !messageShown) {
-                dynamicMessageEl.innerHTML = "Mutlu Yıl Dönümümüz Olsun Sevgilim! ❤️";
-                dynamicMessageEl.style.display = 'inline-block'; // Kutuyu GÖRÜNÜR yap
                 messageShown = true; 
             }
 
-            // 4. DURUM: Sayaç devam ediyor
-            // Sayaç 00:23'e (yönlendirme saatine) doğru saymaya devam ediyor
+            if(distanceToMessage <= 0 && !messageShown) {
+                dynamicMessageEl.innerHTML = "Mutlu Yıl Dönümümüz Olsun Sevgilim! ❤️";
+                dynamicMessageEl.style.display = 'inline-block';
+                messageShown = true; 
+            }
+
             const days = Math.floor(distanceToRedirect / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distanceToRedirect % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distanceToRedirect % (1000 * 60 * 60)) / (1000 * 60));
@@ -167,9 +339,13 @@
                 countdownEl.innerHTML = `${days} gün ${hours} saat ${minutes} dakika ${seconds} saniye`;
             }
         }
+        
+        // Sayfa yüklenince direkt başlat
+        startCountdown();
+        createStars();
+        // Başlangıç ses ayarı dolgusunu uygula
+        window.addEventListener('load', () => applyVolumeFill(volumeSlider)); 
 
-        const interval = setInterval(updateCountdown, 1000);
-        updateCountdown();
     </script>
 </body>
 </html>
