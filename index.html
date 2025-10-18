@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
-        /* ... (Diğer stiller aynı) ... */
+        /* ... (CSS tamamen aynı, değişiklik yok) ... */
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&family=Lora:wght@400;700&display=swap');
 
         body, html {
@@ -23,33 +23,21 @@
         #music-controls {
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: auto; max-width: 95%;
             background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(247, 217, 119, 0.2); border-radius: 30px;
-            padding: 10px 15px; display: flex; align-items: center;
-            /* DEĞİŞİKLİK: Gap tekrar ayarlandı (çok yakın olmasın) */
-            gap: 5px;
+            padding: 10px 15px; display: flex; align-items: center; gap: 5px;
             z-index: 50; opacity: 0.7; transition: opacity 0.3s ease;
         }
         #music-controls:hover { opacity: 1; }
-
         #music-controls button {
             background: none; border: none; color: #f7d977;
-            font-size: 1em; cursor: pointer; padding: 0; /* Padding'i sıfırla, boyut width/height ile kontrol edilecek */
+            font-size: 1em; cursor: pointer; padding: 8px;
             line-height: 1; transition: transform 0.2s ease;
-            /* DEĞİŞİKLİK: Boyutlar büyüdü */
-            width: 45px;
-            height: 45px;
+            width: 45px; height: 45px;
             display: inline-flex; justify-content: center; align-items: center;
         }
         #music-controls button:active { transform: scale(0.9); }
-        /* DEĞİŞİKLİK: İkon boyutları büyüdü */
-        #music-controls button i { font-size: 1.4em; /* Önceki/Sonraki */ }
-        #music-toggle-btn {
-             /* DEĞİŞİKLİK: Play/Pause daha da büyüdü */
-             width: 55px;
-             height: 55px;
-             margin: 0 2px; /* Hafif boşluk */
-         }
-        #music-toggle-btn i { font-size: 1.8em; /* Oynat/Duraklat ikonu */ }
-
+        #music-controls button i { font-size: 1.4em; }
+        #music-toggle-btn { width: 55px; height: 55px; margin: 0 2px; }
+        #music-toggle-btn i { font-size: 1.8em; }
 
         #progress-container { flex-grow: 1; height: 8px; background-color: rgba(255, 255, 255, 0.2); border-radius: 4px; cursor: pointer; margin: 0 8px; min-width: 100px; }
         #progress-bar { height: 100%; width: 0%; background-color: #f7d977; border-radius: 4px; }
@@ -82,8 +70,7 @@
             <div id="progress-bar"></div>
         </div>
         <span id="time-display">00:00 / 00:00</span>
-        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3" title="Ses Ayarı">
-    </div>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3" title="Ses Ayarı"> </div>
 
     <div class="container" id="main-container">
         <h1>ARİT</h1>
@@ -108,12 +95,20 @@
         const playlist = [ "sarki1.mp3" /*, "sarki2.mp3", "ozel_sarki.mp3"*/ ]; let currentTrackIndex = 0;
 
         // --- Fonksiyonlar ---
-        function loadTrack(trackIndex) { music.onerror = null; music.onloadedmetadata = null; music.oncanplay = null; if (!playlist || playlist.length === 0 || trackIndex < 0 || trackIndex >= playlist.length) { console.error("Playlist hatası:", trackIndex); timeDisplay.textContent = "Liste Boş"; return; } music.src = playlist[trackIndex]; music.load(); console.log(`Yükleniyor: ${playlist[trackIndex]}`); music.onerror = (e) => { console.error(`Hata: "${playlist[trackIndex]}"`, e); timeDisplay.textContent = "Hata"; setTimeout(nextTrack, 2000); }; music.onloadedmetadata = () => { timeDisplay.textContent = `00:00 / ${formatTime(music.duration)}`; applyVolumeFill(volumeSlider); progressBar.style.width = '0%'; }; music.oncanplay = () => { if (isPlaying) { music.play().catch(e => { console.error("Çalma hatası:", e); isPlaying = false; musicBtn.innerHTML = '<i class="fas fa-play"></i>'; }); } }; }
+        function loadTrack(trackIndex) { music.onerror = null; music.onloadedmetadata = null; music.oncanplay = null; if (!playlist || playlist.length === 0 || trackIndex < 0 || trackIndex >= playlist.length) { console.error("Playlist hatası:", trackIndex); timeDisplay.textContent = "Liste Boş"; return; } music.src = playlist[trackIndex]; music.load(); console.log(`Yükleniyor: ${playlist[trackIndex]}`); music.onerror = (e) => { console.error(`Hata: "${playlist[trackIndex]}"`, e); timeDisplay.textContent = "Hata"; setTimeout(nextTrack, 2000); }; music.onloadedmetadata = () => { timeDisplay.textContent = `00:00 / ${formatTime(music.duration)}`; applyVolumeFill(volumeSlider); progressBar.style.width = '0%'; music.volume = volumeSlider.value * 0.25; /* Başlangıç sesini ayarla */}; music.oncanplay = () => { if (isPlaying) { music.play().catch(e => { console.error("Çalma hatası:", e); isPlaying = false; musicBtn.innerHTML = '<i class="fas fa-play"></i>'; }); } }; }
         function nextTrack() { if (!playlist || playlist.length === 0) return; currentTrackIndex = (currentTrackIndex + 1) % playlist.length; loadTrack(currentTrackIndex); }
         function prevTrack() { if (!playlist || playlist.length === 0) return; currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; loadTrack(currentTrackIndex); }
         function togglePlayPause() { if (isPlaying) { music.pause(); musicBtn.innerHTML = '<i class="fas fa-play"></i>'; } else { const playPromise = music.play(); if (playPromise !== undefined) { playPromise.then(() => { musicBtn.innerHTML = '<i class="fas fa-pause"></i>'; }).catch(error => { console.error("Oynatma hatası:", error); isPlaying = false; musicBtn.innerHTML = '<i class="fas fa-play"></i>'; }); } else { try { music.play(); musicBtn.innerHTML = '<i class="fas fa-pause"></i>'; } catch (error) { console.error("Eski tarayıcı oynatma hatası:", error); isPlaying = false; musicBtn.innerHTML = '<i class="fas fa-play"></i>'; } } } isPlaying = !isPlaying; }
-        function handleVolumeChange(e) { const value = e.target.value; music.volume = value; music.muted = value == 0; applyVolumeFill(e.target); }
+
+        // DEĞİŞİKLİK: Ses seviyesi %25 ile sınırlandı
+        function handleVolumeChange(e) {
+            const value = e.target.value; // Slider değeri (0-1 arası)
+            music.volume = value * 0.25; // Ses seviyesini 0-0.25 arasına ayarla
+            music.muted = value == 0;
+            applyVolumeFill(e.target); // Görsel dolguyu slider değerine göre yap (0-1 arası)
+        }
         function applyVolumeFill(slider) { const percentage = (slider.value / slider.max) * 100; slider.style.background = `linear-gradient(to right, #f7d977 ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%)`; }
+
         function updateProgressBar() { if (music.duration) { const progressPercent = (music.currentTime / music.duration) * 100; progressBar.style.width = `${progressPercent}%`; timeDisplay.textContent = `${formatTime(music.currentTime)} / ${formatTime(music.duration)}`; } }
         function seek(e) { if (music.duration) { const clickX = e.offsetX; const width = progressContainer.clientWidth; music.currentTime = (clickX / width) * music.duration; } }
         function formatTime(seconds) { if (isNaN(seconds)) return "00:00"; const minutes = Math.floor(seconds / 60); const secs = Math.floor(seconds % 60); return `${minutes < 10 ? '0' : ''}${minutes}:${secs < 10 ? '0' : ''}${secs}`; }
@@ -125,7 +120,15 @@
         // --- Olay Dinleyicileri ---
         musicBtn.addEventListener('click', togglePlayPause); prevBtn.addEventListener('click', prevTrack); nextBtn.addEventListener('click', nextTrack); volumeSlider.addEventListener('input', handleVolumeChange); music.addEventListener('timeupdate', updateProgressBar); progressContainer.addEventListener('click', seek); music.addEventListener('ended', nextTrack);
         // --- Başlangıç ---
-        window.addEventListener('load', () => { loadTrack(currentTrackIndex); startCountdown(); createStars(); applyVolumeFill(volumeSlider); });
+        window.addEventListener('load', () => {
+            // Başlangıç sesini de %25'e göre ayarla
+            volumeSlider.value = 0.3; // Slider %30'da başlasın
+            music.volume = 0.3 * 0.25; // Gerçek ses %7.5 ile başlasın (0.3 * 0.25)
+            loadTrack(currentTrackIndex);
+            startCountdown();
+            createStars();
+            applyVolumeFill(volumeSlider); // Başlangıç dolgusunu göster
+        });
     </script>
 </body>
 </html>
