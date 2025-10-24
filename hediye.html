@@ -18,9 +18,20 @@
         .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: transparent; overflow: hidden; z-index: 0; }
         .star { position: absolute; background: #fff; border-radius: 50%; animation: moveUp linear infinite; opacity: 0.7; }
 
-        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px 20px; box-sizing: border-box; position: relative; z-index: 1; text-align: center; opacity: 0; visibility: hidden; display: none; transition: opacity 0.8s ease-in-out; }
-        section#mektup { display: flex; opacity: 1; visibility: visible; transition: none; justify-content: flex-start; padding-top: 10vh; }
-        section.visible { display: flex; opacity: 1; visibility: visible; }
+        section {
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 80px 20px; box-sizing: border-box; position: relative; z-index: 1; text-align: center;
+            opacity: 0; visibility: hidden; display: none; /* Başlangıçta gizli */
+            transition: opacity 0.8s ease-in-out; /* Sadece opacity geçişi */
+        }
+        section#mektup { /* Mektup başta görünür */
+            display: flex; opacity: 1; visibility: visible; transition: none;
+            justify-content: flex-start; padding-top: 10vh;
+        }
+        section.visible { /* JS ile gösterilecek class */
+             display: flex; opacity: 1; visibility: visible;
+        }
+
 
         #music-controls { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: auto; max-width: 95%; background: #11091a; border: 1px solid rgba(247, 217, 119, 0.2); border-radius: 30px; padding: 10px 15px; display: flex; align-items: center; gap: 5px; z-index: 10; opacity: 0.8; transition: opacity 0.3s ease; }
         #music-controls:hover { opacity: 1; }
@@ -36,16 +47,7 @@
         #volume-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 15px; height: 15px; background: #f7d977; border-radius: 50%; cursor: pointer; }
         #volume-slider::-moz-range-thumb { width: 15px; height: 15px; background: #f7d977; border-radius: 50%; cursor: pointer; border: none; }
         #volume-slider::-moz-range-progress { background-color: #f7d977; height: 8px; border-radius: 4px; }
-
-        .mektup-kutu {
-            max-width: 800px; width: 90%; margin: 0 auto; padding: 40px; border-radius: 25px;
-            border: 1px solid rgba(247, 217, 119, 0.15); box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
-            background: none; -webkit-backdrop-filter: blur(5px) brightness(0.65); backdrop-filter: blur(5px) brightness(0.65);
-            position: relative; animation: fadeInLetter 1.5s ease-out;
-            /* DEĞİŞİKLİK: Transition süresi/fonksiyonu güncellendi */
-            transition: max-height 0.4s ease, padding 0.4s ease;
-            overflow: hidden; max-height: 100px; padding-bottom: 60px;
-        }
+        .mektup-kutu { max-width: 800px; width: 90%; margin: 0 auto; padding: 40px; border-radius: 25px; border: 1px solid rgba(247, 217, 119, 0.15); box-shadow: 0 0 30px rgba(0, 0, 0, 0.4); background: none; -webkit-backdrop-filter: blur(5px) brightness(0.65); backdrop-filter: blur(5px) brightness(0.65); position: relative; animation: fadeInLetter 1.5s ease-out; transition: max-height 0.4s ease, padding 0.4s ease; overflow: hidden; max-height: 100px; padding-bottom: 60px; }
         .mektup-kutu.expanded { max-height: 3000px; padding-bottom: 70px; }
         @keyframes fadeInLetter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .polaris-star { position: absolute; top: 25px; right: 30px; font-size: 1.8em; color: #f7d977; text-shadow: 0 0 15px rgba(247, 217, 119, 0.7); animation: sparkle 2.5s infinite ease-in-out; }
@@ -88,54 +90,21 @@
         .timeline-content p { margin: 0; font-size: 0.95em; line-height: 1.6; color: rgba(255, 255, 255, 0.85); }
         .timeline-item:nth-child(odd) .timeline-content::before { content: " "; height: 0; position: absolute; top: 22px; width: 0; z-index: 1; right: 30px; border: medium solid rgba(0,0,0,0.2); border-width: 10px 0 10px 10px; border-color: transparent transparent transparent rgba(0,0,0,0.2); }
         .timeline-item:nth-child(even) .timeline-content::before { content: " "; height: 0; position: absolute; top: 22px; width: 0; z-index: 1; left: 30px; border: medium solid rgba(0,0,0,0.2); border-width: 10px 10px 10px 0; border-color: transparent rgba(0,0,0,0.2) transparent transparent; }
-
         @media (max-width: 768px) { .mektup-kutu { padding: 30px; padding-bottom: 60px; max-height: 90px;} .mektup-kutu.expanded { max-height: 2500px; padding-bottom: 70px;} .mektup-kutu p { font-size: 1.1em; } h2 { font-size: 2.2em; } #expand-mektup-btn { width: 30px; height: 30px; font-size: 0.9em;} .slider-container{ max-width: 90%; } .slider-btn { font-size: 1.5em; padding: 8px 12px;} .devam-butonu { margin-top: 30px; } .timeline-container::before { left: 31px; } .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; left: 0 !important; text-align: left !important;} .timeline-item::after { left: 15px; transform: translateX(0) !important; right: auto !important; } .timeline-item:nth-child(odd) .timeline-content::before, .timeline-item:nth-child(even) .timeline-content::before { left: -10px; border-width: 10px 10px 10px 0; border-color: transparent rgba(0,0,0,0.2) transparent transparent; top: 22px; right: auto; } }
         @media (max-width: 480px) { section { padding: 60px 15px; } .mektup-kutu { padding: 25px; padding-bottom: 55px; max-height: 80px;} .mektup-kutu.expanded { max-height: 2000px; padding-bottom: 65px;} .mektup-kutu p { font-size: 1em; line-height: 1.7; } .mektup-kutu p:first-of-type::first-letter { font-size: 2.5em; } .polaris-star { font-size: 1.5em; top: 20px; right: 20px; } .devam-butonu { padding: 10px 20px; margin-top: 25px;} h2 { font-size: 1.8em; } #expand-mektup-btn { width: 28px; height: 28px; font-size: 0.8em; bottom: 12px;} .slider-container{ padding: 5px; } .slider-btn { font-size: 1.2em; padding: 5px 10px;} .prev { left: 10px; } .next { right: 10px; } #show-timeline-btn { padding: 12px 25px; font-size: 1em;} .timeline-content { padding: 15px 20px; } .timeline-content h3 { font-size: 1em; } .timeline-content p { font-size: 0.9em; } }
     </style>
 </head>
 <body>
+    <script> try { document.body.style.visibility = 'hidden'; const canView = sessionStorage.getItem('canViewGift'); if (canView !== 'true') { window.location.replace('index.html'); } else { document.body.style.visibility = 'visible'; } } catch (e) { console.error("SessionStorage kontrolü başarısız.", e); document.body.style.visibility = 'visible'; } </script>
 
     <div class="stars" id="stars-container"></div>
     <audio id="bg-music" src="sarki1.mp3"></audio>
     <div id="music-controls"> <button id="prev-btn" title="Önceki Şarkı"><i class="fas fa-backward-step"></i></button> <button id="music-toggle-btn" title="Oynat/Duraklat"><i class="fas fa-play"></i></button> <button id="next-btn" title="Sonraki Şarkı"><i class="fas fa-forward-step"></i></button> <div id="progress-container"><div id="progress-bar"></div></div> <span id="time-display">00:00 / 00:00</span> <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3" title="Ses Ayarı"> </div>
 
-    <section id="mektup">
-        <div class="mektup-kutu" id="mektup-kutu">
-            <i class="fas fa-star polaris-star" title="Kuzey Yıldızımız"></i>
-            <p>Lorem ipsum dolor sit amet...</p>
-            <p>Excepteur sint occaecat...</p>
-            <button id="expand-mektup-btn" title="Daha Fazla Oku"><i class="fas fa-chevron-down"></i></button>
-        </div>
-        <button class="devam-butonu" id="btn-to-timeline">Hadi Anılarımıza Bakalım <i class="fas fa-arrow-down" style="margin-left: 8px;"></i></button>
-    </section>
-
-    <section id="zaman-tuneli">
-        <h2>Zaman Tünelimiz</h2>
-        <button id="show-timeline-btn">Anılarımızı Keşfet <i class="fas fa-chevron-down"></i></button>
-        <div class="timeline-container" id="timeline-content">
-            <div class="timeline-item"> <div class="timeline-content"> <h3>[Tarih]</h3> <p>...</p> </div> </div>
-            <div class="timeline-item"> <div class="timeline-content"> <h3>[Tarih]</h3> <p>...</p> </div> </div>
-            <div class="timeline-item"> <div class="timeline-content"> <h3>[Tarih]</h3> <p>...</p> </div> </div>
-            <div class="timeline-item"> <div class="timeline-content"> <h3>[Tarih]</h3> <p>...</p> </div> </div>
-             <button class="devam-butonu" id="btn-to-photos" style="margin: 30px auto 0 auto; display: block; width: fit-content;">Şimdi Fotoğraflar <i class="fas fa-images" style="margin-left: 8px;"></i></button>
-        </div>
-    </section>
-
-    <section id="fotograflar">
-        <h2>Fotoğraflarımız</h2>
-        <div class="slider-container">
-            <div class="slides" id="photo-slides"></div>
-            <button class="slider-btn prev" id="prev-photo">❮</button>
-            <button class="slider-btn next" id="next-photo">❯</button>
-        </div>
-        <button class="devam-butonu" id="btn-to-videos">Videolarımıza Geçelim <i class="fas fa-video" style="margin-left: 8px;"></i></button>
-    </section>
-
-    <section id="videolar">
-        <h2>Videolarımız</h2>
-        <p style="color: #aaa;">(Videolar yakında buraya gelecek...)</p>
-         <button class="devam-butonu" id="btn-to-top" style="font-size: 0.9em;">Başa Dön <i class="fas fa-arrow-up" style="margin-left: 8px;"></i></button>
-    </section>
+    <section id="mektup"> <div class="mektup-kutu" id="mektup-kutu"> <i class="fas fa-star polaris-star" title="Kuzey Yıldızımız"></i> <p>Lorem ipsum dolor sit amet...</p> <p>Excepteur sint occaecat...</p> <button id="expand-mektup-btn" title="Daha Fazla Oku"><i class="fas fa-chevron-down"></i></button> </div> <button class="devam-butonu" id="btn-to-timeline">Hadi Anılarımıza Bakalım <i class="fas fa-arrow-down" style="margin-left: 8px;"></i></button> </section>
+    <section id="zaman-tuneli"> <h2>Zaman Tünelimiz</h2> <button id="show-timeline-btn">Anılarımızı Keşfet <i class="fas fa-chevron-down"></i></button> <div class="timeline-container" id="timeline-content"> <div class="timeline-item"> <div class="timeline-content"> <h3>[Tarih]</h3> <p>...</p> </div> </div> <div class="timeline-item"> <div class="timeline-content"> <h3>[Tarih]</h3> <p>...</p> </div> </div> <div class="timeline-item"> <div class="timeline-content"> <h3>[Tarih]</h3> <p>...</p> </div> </div> <div class="timeline-item"> <div class="timeline-content"> <h3>[Tarih]</h3> <p>...</p> </div> </div> <button class="devam-butonu" id="btn-to-photos" style="margin: 30px auto 0 auto; display: block; width: fit-content;">Şimdi Fotoğraflar <i class="fas fa-images" style="margin-left: 8px;"></i></button> </div> </section>
+    <section id="fotograflar"> <h2>Fotoğraflarımız</h2> <div class="slider-container"> <div class="slides" id="photo-slides"></div> <button class="slider-btn prev" id="prev-photo">❮</button> <button class="slider-btn next" id="next-photo">❯</button> </div> <button class="devam-butonu" id="btn-to-videos">Videolarımıza Geçelim <i class="fas fa-video" style="margin-left: 8px;"></i></button> </section>
+    <section id="videolar"> <h2>Videolarımız</h2> <p style="color: #aaa;">(Videolar yakında buraya gelecek...)</p> <button class="devam-butonu" id="btn-to-top" style="font-size: 0.9em;">Başa Dön <i class="fas fa-arrow-up" style="margin-left: 8px;"></i></button> </section>
 
     <script>
         // --- Elementler ---
@@ -145,7 +114,6 @@
         const showTimelineBtn = document.getElementById("show-timeline-btn"); const timelineContent = document.getElementById("timeline-content"); const timelineItems = document.querySelectorAll('.timeline-item');
         const btnToTimeline = document.getElementById("btn-to-timeline"); const btnToPhotos = document.getElementById("btn-to-photos"); const btnToVideos = document.getElementById("btn-to-videos"); const btnToTop = document.getElementById("btn-to-top");
         const mektupSection = document.getElementById("mektup"); const timelineSection = document.getElementById("zaman-tuneli"); const photosSection = document.getElementById("fotograflar"); const videosSection = document.getElementById("videolar");
-
         // --- Durum ---
         let isPlaying = false; const playlist = [ "sarki1.mp3", "sarki2.mp3" ]; let currentTrackIndex = 0; let currentSlideIndex = 0; let slides = [];
         const imagePaths = [ "resim1.jpg", "resimler/ani2.png", "manita.jpeg" ];
@@ -169,8 +137,6 @@
         const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('in-view'); } }); }, { threshold: 0.1 });
         function activateTimelineScrollAnimation() { if (timelineContent.classList.contains('visible')) { timelineItems.forEach(item => { observer.observe(item); }); } else { timelineItems.forEach(item => { observer.unobserve(item); item.classList.remove('in-view'); }); } }
         showTimelineBtn.addEventListener('click', () => { timelineContent.classList.toggle('visible'); const icon = showTimelineBtn.querySelector('i'); if (timelineContent.classList.contains('visible')) { showTimelineBtn.innerHTML = 'Anıları Gizle <i class="fas fa-chevron-up"></i>'; showTimelineBtn.classList.add('expanded'); setTimeout(() => timelineContent.scrollIntoView({ behavior: "smooth", block: "start" }), 500); activateTimelineScrollAnimation(); } else { showTimelineBtn.innerHTML = 'Anılarımızı Keşfet <i class="fas fa-chevron-down"></i>'; showTimelineBtn.classList.remove('expanded'); activateTimelineScrollAnimation(); } });
-
-        // Bölüm Geçiş Fonksiyonu
         function showNextSection(sectionElement) { if (!sectionElement || sectionElement.classList.contains('visible')) return; sectionElement.style.display = 'flex'; setTimeout(() => { sectionElement.classList.add('visible'); sectionElement.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50); if (sectionElement === timelineSection && timelineContent.classList.contains('visible')) { activateTimelineScrollAnimation(); } }
 
         // --- Olay Dinleyicileri ---
